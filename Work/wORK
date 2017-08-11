@@ -1,0 +1,103 @@
+Url For Cms
+==================================
+1. Get Base Url :
+	{{store url=""}}
+
+2. Get Skin Url :
+	{{skin url='images/imagename.jpg'}}
+
+3. Get Media Url :
+     {{media url='/imagename.jpg'}}
+
+4. Get Store Url :
+     {{store url='mypage.html'}}
+     
+	 <img src="{{media url="wysiwyg/infortis/ultimo/menu/featured2.jpg" _secure="true" }}" />
+     
+Script Upgrade
+=======================================
+	mysql4-upgrade-0.1.0-0.2.0.php
+	
+<?php
+	$installer = $this;
+	$installer->startSetup();
+
+	$installer->run("
+			ALTER TABLE {$this->getTable('uploadtool_diamonds_inventory')} ADD `fluorescence_color` VARCHAR( 50 ) NOT NULL;
+	");
+	$installer->endSetup();
+?>
+
+
+Add Custom Button in admin
+===============================================
+$this->_addButton('filterDiamonds', array(
+        		'label'     => Mage::helper('diamondsearch')->__('Filter Diamonds'),
+        		'onclick' => "setLocation('{$this->getUrl('*/adminhtml_Diamondsearch/filterDiamonds')}')",
+        		 
+        ), -100);
+==============================		
+
+<default>
+	<reference name="top.links">				
+		<!-- Remove my account top links -->
+		<action method="removeLinkByUrl"><url helper="customer/getAccountUrl"/></action>
+
+	</reference>
+	</default>
+	
+	 <customer_logged_in>
+		<reference name="top.links">
+			<action method="removeLinkByUrl"><url helper="customer/getLogoutUrl"/></action>
+		</reference>
+	</customer_logged_in>
+	<customer_logged_out>
+		<reference name="top.links">
+			<action method="removeLinkByUrl"><url helper="customer/getLoginUrl"/></action>
+		</reference>
+	</customer_logged_out>
+================================================================
+
+Log events in dispatchEvent Mage.php
+Mage::log($name, null, 'events.log', true);
+
+
+=====================================================================================
+
+Read category attribute 
+
+	<?php $cateoption=$category->getData('showinslider') ; ?>	
+    	<?php $attribute = Mage::getSingleton('eav/config')->getAttribute('catalog_category', 'showinslider'); ?>
+		<?php $text = $attribute->getSource()->getOptionText($cateoption); ?>
+		<?php if($text=='Yes'): ?>
+
+
+=============================================================================================
+
+Redirect :
+
+	Mage::getSingleton('core/session')->addError('Please Select Product');
+	$this->_redirect('frontorder/index/createorder');
+=============================================================================================
+
+  		$controller = $observer->getEvent()->getAction();
+        $layout = $observer->getEvent()->getLayout();        
+        $class = get_class($controller);	
+
+	if (Mage::app()->getFrontController()->getAction()->getFullActionName() == 'checkout_cart_index') 
+	
+===================================================================================================
+check store 
+	$store = Mage::app()->getStore()->getCode();
+	if($store=='apparelmonster')
+	
+
+
+
+
+
+
+
+
+
+

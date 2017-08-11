@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Dolphin_Logorderuseragent>
+      <version>0.1.0</version>
+    </Dolphin_Logorderuseragent>
+  </modules>
+  <global>
+    <helpers>
+      <logorderuseragent>
+        <class>Dolphin_Logorderuseragent_Helper</class>
+      </logorderuseragent>
+    </helpers>
+	<models>
+	  <logorderuseragent>
+		<class>Dolphin_Logorderuseragent_Model</class>
+		<resourceModel>logorderuseragent_mysql4</resourceModel>
+	  </logorderuseragent>
+	</models>
+	<resources>
+	  <logorderuseragent_setup>
+		<setup>
+		  <module>Dolphin_Logorderuseragent</module>
+		  <class>Mage_Sales_Model_Mysql4_Setup</class>
+		</setup>
+		<connection>
+		  <use>core_setup</use> 
+		</connection>
+	  </logorderuseragent_setup>
+	  <logorderuseragent_write>
+		<connection>
+		  <use>core_write</use>
+		</connection>
+	  </logorderuseragent_write>
+	  <logorderuseragent_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </logorderuseragent_read>
+	</resources>   
+    <events> 
+	  <sales_order_place_after> <!-- identifier of the event we want to catch -->
+        <observers>
+          <sales_order_place_after_handler> <!-- identifier of the event handler -->
+            <type>model</type> <!-- class method call type; valid are model, object and singleton -->
+            <class>logorderuseragent/observer</class> <!-- observers class alias -->
+            <method>logdevice</method>  <!-- observer's method to be called -->
+            <args></args> <!-- additional arguments passed to observer -->
+          </sales_order_place_after_handler>
+        </observers>
+      </sales_order_place_after>
+    </events>
+  </global>
+</config> 

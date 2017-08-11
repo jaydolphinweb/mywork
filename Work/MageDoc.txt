@@ -1,0 +1,539 @@
+Module Creator
+=================================================================
+http://magestore.byethost31.com/moduleCreator.zip
+http://www.silksoftware.com/magento-module-creator/
+
+
+Magento Product Filter
+===================================================================
+http://devdocs.magento.com/guides/m1x/magefordev/mage-for-dev-8.html
+
+General
+=============================================================================================================================
+
+Writing to the log
+--------------------------------
+Mage::log("nice to learn this ");
+Mage::log($myObject);
+
+Log to custom file
+Mage::log('Your Log Message', Zend_Log::INFO, 'your_log_file.log');
+
+Debug using Zend
+--------------------------------
+ echo Zend_Debug::dump($thing_to_debug, 'debug');
+
+ // Show template path hint 
+ if($_SERVER['REMOTE_ADDR'] == '123.201.19.154') 
+  {
+	self::$_showTemplateHints = 1;
+	self::$_showTemplateHintsBlocks = 1;
+	return self::$_showTemplateHints;
+  }  	 
+
+
+Get Magento Store ID
+----------------------------------
+Mage::app()->getStore()->getStoreId();
+
+
+Get Current Url
+-----------------------------------
+echo Mage::helper('core/url')->getCurrentUrl();
+
+Get Base Paths
+---------------------------------------
+$base_path = Mage::getBaseDir('base');
+var_dump($base_path);
+$etc_path = Mage::getBaseDir('etc');
+var_dump($etc_path);
+Options:
+o app_dir
+o base_dir
+o code_dir
+o design_dir
+o etc_dir
+o lib_dir
+o locale_dir
+o media_dir
+o skin_dir
+o var_dir
+o tmp_dir
+o cache_dir
+o log_dir
+o session_dir
+o upload_dir
+o export_dir
+
+
+<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$brandstoreData['banner']; ?>"
+d
+Get Magento Media Url
+----------------------------------------
+Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+
+Get Magento Media Url
+----------------------------------------
+Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+
+Get Magento Skin Url
+-----------------------------------------
+Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
+
+Get Magento Store Url
+-------------------------------------------
+Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+
+Get Magento Js Url
+------------------------------------------
+Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS);
+
+Get Secure Url
+--------------------------------------------
+Mage::getUrl('',array('_secure'=>true)
+Mage::getUrl('',array('_forced_secure'=>true)
+
+Accessing a helper
+---------------------------------------
+Mage::helper('module/data')->functionName();
+
+Format a price value?
+---------------------------------------
+Mage::helper('core')->formatPrice($amount);
+
+Get an Array of Country names
+----------------------------------------
+$countryList = Mage::getResourceModel('directory/country_collection')
+	->loadData()
+	->toOptionArray(false);
+echo '<pre>';
+print_r( $countryList);
+exit('</pre>');
+
+Create a country dropdown
+------------------------------------------
+$_countries = Mage::getResourceModel('directory/country_collection')
+		->loadData()
+		->toOptionArray(false);
+		if(count($_countries) > 0){ ?>
+<select name="country" id="country">
+<option value="">-- Please Select --</option>
+<?php foreach($_countries as $_country){ ?>
+<option value="<?php echo $_country['value']; ?>">
+<?php echo $_country['label']; ?>
+</option>
+<?php } ?>
+</select>
+<?php } ?>
+
+Create state dropdown for use in forms
+-------------------------------------------
+$regionCollection = Mage::getModel('directory/region')
+		->getCollection()
+		->addCountryFilter('US');
+$regions = $regionCollection->toOptionArray();
+$general->addField('state', 'select', array(
+'name' => 'state',
+'label' => Mage::helper('core')->__('Location State'),
+'value' => 1,
+'values' => $regions,
+'required' => true
+));
+
+All Store Views?
+----------------------------------------------
+Mage::app()->getStores(); // pass true to include the admin store view, too
+
+How do I get an instance of an attribute?
+-------------------------------------------------
+Mage::getSingleton('eav/config')->getAttribute($entityType, $attributeCode)
+
+What if the attribute is a dropdown?
+----------------------------------------------
+$product->getAttributeText('brandkey')
+
+Price rounding
+-----------------------------------------------
+echo Mage::getStoreConfig('general/store_information/name');
+echo Mage::getModel('sales/order')->formatPricePrecision($_product->getFinalPrice(), 3);
+
+Requests
+---------------------------------------------
+How do I get at GET/POST parameters?
+Mage::app()->getRequest()->getParam('param_name'); // single parameter
+Mage::app()->getRequest()->getParams(); // all parameters
+
+Session
+----------------------------------------------
+Get Customer Session
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+
+
+Setting Session Variables
+-------------------------------------------------------
+Mage::getSingleton('core/session')->setBlahBlahBlah('my data');
+$myData = Mage::getSingleton('core/session')->getBlahBlahBlah();
+
+Next Page Notifications Message
+------------------------------------------------------
+Mage::getSingleton('core/session')->addError('Custom error here');
+Mage::getSingleton('core/session')->addWarning('Custom warning here');
+Mage::getSingleton('core/session')->addNotice('Custom notice here');
+Mage::getSingleton('core/session')->addSuccess('Custom success here');
+
+
+Customer
+==========================================
+
+Customer Model
+------------------------
+$customer = Mage::getModel('customer/customer');
+
+Get Email address by customer id
+--------------------------------
+$customer = Mage::getModel('customer/customer');
+$customer->load(10);
+$data = $customer->getData();
+echo $data['email'];
+
+Get Customer Birthday
+----------------------------------------
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+echo 'birthday: '. $customer->getData('dob');
+
+Find customers by created_at date:
+-------------------------------------------
+$customer = Mage::getModel('customer/customer')->getResourceCollection();
+$customer->addFieldToFilter('created_at', array('date' => true, 'to' => '2012-01-09 23:30:43'));
+$data = $customer->getData();
+print_r($data);
+
+Get Customer Group Id
+---------------------------------------------
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+echo $customer->getGroupId();
+
+Get Customer Firstname
+--------------------------------------------
+$customer->getName();
+$customer->getFirstname();
+
+Detect if Customer is Logged in
+---------------------------------------------
+$this->helper('customer')->isLoggedIn()
+
+
+Products
+=====================================================================================================================================================
+
+Product Model
+---------------------------
+$product = Mage::getModel('catalog/product');
+
+Load by Sku
+--------------------------
+$product = Mage::getModel('catalog/product')->loadByAttribute('sku', $sku);
+
+Product Filter
+--------------------------
+$storeId = Mage::app()->getStore()->getId();
+$collections = Mage::getModel('catalog/product')->getCollection()
+				->addAttributeToSelect(array('manufacturer', 'collections'))
+				->addStoreFilter($storeId)
+				->addAttributeToFilter('aw_shopbybrand_brand',$brandid)->groupByAttribute('collections'); 
+
+
+Custom Collection Filter
+------------------------------
+    
+	<?php $collection = Mage::getModel('videogallery/videogallery')->getCollection(); ?>
+	<?php $collection->addFieldToFilter('brand',$brandstoreData['id']);  ?>
+	<?php $collection->addFieldToFilter('store_id',
+										array(
+											 array('finset'=>Mage::app()->getStore()->getId()),
+											 array('eq'=>'0')
+											 )
+										); ?>
+	<?php $data = $collection->getData() ?>
+
+
+Categories
+=========================================================================================================================================================
+$categories = $product->getCategoryCollection();
+
+Load Category by ID
+------------------------------
+$category = Mage::getModel('catalog/category')->load(3);
+
+Get Category Name
+-------------------------------
+$category->getName();
+
+Get Category URl
+-----------------------------
+$category->getUrl();
+
+Is product purchasable?
+-----------------------------
+if($_product->isSaleable()) { // do stuff }
+
+Get Products by Category ID
+-----------------------------
+$category = Mage::getModel('catalog/category')->load(5);
+$products = $category->getProductCollection();
+print_r($products->getData());
+
+Product stock quantity
+----------------------------
+$qtyStock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+
+Get all products from an array of product ids
+----------------------------------------------
+$products = Mage::getModel('catalog/product')->getCollection()->addAttributeToFilter('entity_id',
+array('in' => $productIds));
+
+Get the configurable/grouped/bundled product a simple product belongs to
+---------------------------------------------
+$simpleProduct->loadParentProductIds();
+$parentProductIds = $simpleProduct->getParentProductIds();
+
+Get the simple products assigned to a configurable product
+---------------------------------------------
+$configProduct->getTypeInstance()->getUsedProductCollection($configProduct);
+
+Get Products by type
+-----------------------------------------------
+$collectionSimple = Mage::getResourceModel('catalog/product_collection')
+->addAttributeToFilter('type_id', array('eq' => 'simple'));
+
+Get Attribute Set Id
+--------------------------------------------
+$product->getAttributeSetId();
+
+Get Attribute Set Name
+-------------------------------------------
+$attributeSetName = Mage::getModel('eav/
+entity_attribute_set')->load($_product->getAttributeSetId())->getAttributeSetName();
+
+
+Orders
+====================================================================================================================================================
+
+Order Model
+-----------------------------------------
+$order = Mage::getModel('sales/order');
+$customerOrderCollection = Mage::getModel('sales/order')->getCollection();
+$customerOrderCollection->addFieldToFilter('customer_id', $customer_id);
+
+Get Order Status
+------------------------------------------
+$order->getStatus();
+
+Add Order Status History Comment
+------------------------------------------
+$comment = 'blah blah';
+$order->addStatusHistoryComment($comment);
+$order->save();
+
+Load by Increment ID
+--------------------------------------------------
+$orderIncrementId = YOUR_ORDER_INCREMENT_ID;
+$order = Mage::getModel('sales/order')
+->loadByIncrementId($orderIncrementId);
+
+Set Custom Order Status
+---------------------------------------------------
+// Custom status must exist
+$order = $model->load($order_id);
+$order->setStatus('delivered');
+$order->save();
+
+// change order status to 'Pending'
+$order->setState(Mage_Sales_Model_Order::STATE_NEW, true)->save();
+// change order status to 'Pending Paypal'
+$order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true)->save();
+// change order status to 'Processing'
+$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true)->save();
+// change order status to 'Completed'
+$order->setState(Mage_Sales_Model_Order::STATE_COMPLETE, true)->save();
+// change order status to 'Closed'
+$order->setState(Mage_Sales_Model_Order::STATE_CLOSED, true)->save();
+// change order status to 'Canceled'
+$order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true)->save();
+// change order status to 'Holded'
+$order->setState(Mage_Sales_Model_Order::STATE_HOLDED, true)->save();
+
+
+Invoices
+======================================================================================================================================================
+
+Get Invoice by ID
+-----------------------------------
+$invoice = Mage::getModel('sales/order_invoice')->load($invoiceId);
+
+Capture invoice
+----------------------------------
+if($invoice->canCapture()){
+$invoice->capture();
+}
+if($order->canInvoice()){
+$invoice = $order->prepareInvoice();
+$invoice->register();
+// Send email
+$invoice->setEmailSent(true);
+$invoice->getOrder()->setIsInProcess(true);
+$transactionSave = Mage::getModel('core/resource_transaction')
+->addObject($invoice)
+->addObject($invoice->getOrder())
+->save();
+}
+
+Shipments
+==========================================================================================================================================================
+Get all tracking numbers from shipments
+-------------------------------------------------------
+$model = Mage::getModel('sales/order_shipment');
+$tracks = $model->load(1)->getAllTracks();
+//$collection = $model->getCollection();
+//$data = $collection->getData();
+foreach ($tracks as $track) {
+echo $track->getNumber();
+}
+
+Shipping info for magento
+----------------------------------------------------------
+$_order = $this->getShipment()->getOrder();
+$_shippingAddress = $_order->getShippingAddress();
+echo $_shippingAddress->getFirstname() . '<br />';
+echo $_shippingAddress->getLastname() . '<br />';
+echo $_shippingAddress->getCompany() . '<br />';
+echo $_shippingAddress->getStreetFull() . '<br />';
+echo $_shippingAddress->getRegion() . '<br />';
+echo $_shippingAddress->getCity() . '<br />';
+echo $_shippingAddress->getPostcode() . '<br />';
+echo $_shippingAddress->getCountry_id() . '<br />';
+
+Cart
+=========================================================================================================================================================
+
+Magento Cart Total
+----------------------------------------
+echo $this->helper('checkout')->formatPrice(Mage::getSingleton('checkout/
+cart')->getQuote()->getGrandTotal());
+
+Blocks
+=========================================================================================================================================
+Call Static Block
+---------------------
+echo $this->getLayout()->createBlock('cms/block')->setBlockId('block-name')->toHtml();
+
+Admin
+==============================================================================================================================================
+Permissions
+-----------------------------------------
+/*
+// Example code to get all the available permissions
+$resources = Mage::getModel('admin/roles')->getResourcesTree();
+$nodes = $resources->xpath('//*[@aclpath]');
+echo '<dl>';
+foreach($nodes as $node){
+echo '<dt>' . (string)$node->title . '</dt>';
+echo '<dd>' . $node->getAttribute('aclpath') . '</dd>';
+}
+echo '</dl>';
+*/
+var_dump(Mage::getSingleton('admin/session')->isAllowed('admin/sales/order/actions/scforce'));
+
+
+Generate a link from an admin page
+-------------------------------------
+echo Mage::helper("adminhtml")->getUrl("mymodule/adminhtml_index/action/");
+
+Programmatically change config data
+------------------------------------
+// find 'path' in table 'core_config_data' e.g. 'design/head/demonotice'
+$my_change_config = new Mage_Core_Model_Config();
+// turns notice on
+$my_change_config->saveConfig('design/head/demonotice', "1", 'default', 0);
+// turns notice off
+$my_change_config->saveConfig('design/head/demonotice', "0", 'default', 0);
+
+Get Config Valus
+-----------------------------------
+$value = Mage::getStoreConfig('[MODULE]/[SECTION]/[FIELD]', $storeId
+
+Common Config Values    //transaction email
+-----------------------
+//General contact
+Mage::getStoreConfig('trans_email/ident_gerneral/name');
+Mage::getStoreConfig('trans_email/ident_gerneral/email');
+
+//Sales Representative
+Mage::getStoreConfig('trans_email/ident_sales/name');
+Mage::getStoreConfig('trans_email/ident_sales/email');
+
+//Customer Support
+Mage::getStoreConfig('trans_email/ident_support/name');
+Mage::getStoreConfig('trans_email/ident_support/email');
+
+//Custom email1
+Mage::getStoreConfig('trans_email/ident_custom1/name');
+Mage::getStoreConfig('trans_email/ident_custom1/email');
+
+//Custom email2
+Mage::getStoreConfig('trans_email/ident_custom2/name');
+Mage::getStoreConfig('trans_email/ident_custom2/email');
+
+Events
+==========================================================================================================================
+Mage::dispatchEvent($eventName);
+
+Enterprise
+==========================================================================================================================
+Get Reward balance (enterprise)
+--------------------------------
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+$reward = Mage::getModel('enterprise_reward/reward')
+->setCustomer($customer)
+->setWebsiteId(Mage::app()->getWebsite()->getId())
+->loadByCustomer();
+$balance = $reward->getPointsBalance();
+echo $balance;
+
+Miscellaneous
+===================================================================================================================================
+
+Connect directly to a table in Magento
+----------------------------------------
+$w = Mage::getSingleton('core/resource')->getConnection('core_write');
+$result = $w->query('select 'entity_id' from 'catalog_product_entity');
+if (!$result) {
+return false;
+}
+$row = $result->fetch(PDO::FETCH_ASSOC);
+if (!$row) {
+return false;
+}
+
+Get the MySQL table name of any Magento Object
+-------------------------------------------------------
+$r = Mage::getResourceSingleton('core/resource')->getConnection('core_read');
+$tableName = $r->getTable('catalog/product');
+
+
+Tasks
+==========================================================================================================
+Load observer from root
+<?php
+	// Change current directory to the directory of current script
+	chdir(dirname(__FILE__));
+	ini_set('display_errors', 1);
+	ini_set('memory_limit','1024M');
+	require_once 'app/Mage.php';
+	umask(0);
+	Mage::app();
+
+	Mage::getModel('datareport/observer')->historyCleanUp();
+?>
+
+

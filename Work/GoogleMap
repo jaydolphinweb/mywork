@@ -1,0 +1,61 @@
+<p>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</p>
+<p>
+<script type="text/javascript">// <![CDATA[
+var map;
+var global_markers = [];    
+var markers = [[40.7925553, -74.7051598, 'Chester Lighting & Supply'],[40.232413, -74.274277, 'Chester Lighting Inc'],[40.3793164, -74.0928066, 'Chester Lighting'],[40.3302952,-75.1307858, 'Doylestown Electric Suplly Co']];
+
+var infowindow = new google.maps.InfoWindow({});
+
+function initialize() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(40.77627, -73.910965);
+    var myOptions = {
+        zoom: 6,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    addMarker();
+}
+
+function addMarker() {
+    for (var i = 0; i < markers.length; i++) {
+        // obtain the attribues of each marker
+        var lat = parseFloat(markers[i][0]);
+        var lng = parseFloat(markers[i][1]);
+        var trailhead_name = markers[i][2];
+
+        var myLatlng = new google.maps.LatLng(lat, lng);
+
+        var contentString = "<html><body><div><p><h2>" + trailhead_name + "</h2></p></div></body></html>";
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: trailhead_name
+        });
+
+        marker['infowindow'] = contentString;
+
+        global_markers[i] = marker;
+
+        google.maps.event.addListener(global_markers[i], 'click', function() {
+            infowindow.setContent(this['infowindow']);
+            infowindow.open(map, this);
+        });
+    }
+}
+
+window.onload = initialize;
+// ]]></script>
+</p>
+<div id="map_canvas">&nbsp;</div>
+<style><!--
+#map_canvas {
+  height: 450px;
+  width: 100%;
+}
+--></style>

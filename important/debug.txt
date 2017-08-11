@@ -1,0 +1,7 @@
+ path hint
+ -------------------------
+ //if($_SERVER['REMOTE_ADDR'] == '123.201.19.154') {
+    		self::$_showTemplateHints = 1;
+    		self::$_showTemplateHintsBlocks = 1;
+    		return self::$_showTemplateHints;
+    //	} 

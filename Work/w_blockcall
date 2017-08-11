@@ -1,0 +1,50 @@
+$industry = $this->getRequest()->getParam('industry');	
+	$country = $this->getRequest()->getParam('country');	
+	//echo $industry;
+	$brandsCollection = Mage::getModel('awshopbybrand/brand')->getCollection();
+	$brandsCollection
+			->addFieldToFilter('store_ids', array(
+					array('finset' => '0'),
+					array('finset' => (string) (Mage::app()->getStore()->getId())),
+				))
+			->addStatusFilter()
+			->setOrder('title', Varien_Data_Collection::SORT_ORDER_ASC);
+			//->setOrder('priority', Varien_Data_Collection::SORT_ORDER_ASC);
+	if($industry) { $brandsCollection->addFieldToFilter('industry', $industry );}
+	if($country) 
+	{ 
+		if(trim($country)!='Oups, I have no idea, are you on water?') 
+		{ 
+			//$brandsCollection->addFieldToFilter('country', $this->__getCountryAbbr($country)); 
+			$brandsCollection->addFieldToFilter('country', $country); 
+		}	
+	} 	
+	
+	//echo $brandsCollection->getSelect();
+							
+    $html='';
+    $block=$this->getLayout()->createBlock('awshopbybrand/allbrands'); 
+    
+    $html=$html .'<div id="brandres">';     
+	foreach ($brandsCollection as $brand)
+	{
+		
+		$html=$html .'<div class="aw_brand_container new">';
+		$html=$html .'<a href="'.$block->getBrandUrl($brand).'" class="aw_brands_url" title="'.$block->escapeHtml($brand->getTitle()).'">';
+		$html=$html .'<div class="aw_brand_logo">';
+		$html=$html .'<img src="'.$block->getImageUrl($brand, 150, 150).'"  width="150" />';
+		$html=$html ."</div>";
+		$html=$html . '<div class="aw_brand_title">'.$block->escapeHtml($brand->getTitle()).'</div>';
+		$html=$html ."</a>";
+		$html=$html ." </div>" ;   
+		        
+                   
+    }
+	if($brandsCollection->count()==0)
+	{
+	    
+	   $html=$html ."<p class='nobrand'>No Result Found</p>" ;   
+	    
+    }
+    $html=$html ." </div>" ;           	 
+	 echo $html;

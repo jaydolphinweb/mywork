@@ -1,0 +1,43 @@
+list Atribute set
+---------------------------
+		$attributeSetCollection = Mage::getResourceModel('eav/entity_attribute_set_collection') ->load();
+        $_menuItems[] = array();
+        foreach ($attributeSetCollection as $id=>$attributeSet) 
+        {
+		  $entityTypeId = $attributeSet->getEntityTypeId();
+		  $name = $attributeSet->getAttributeSetName();
+		  if($name=='Default') continue;
+		  $_menuItems2[] = $name;
+		}
+		
+		//echo "<pre>";
+		//print_r($_menuItems2);  
+		?>
+		<div class='brand_search'>
+			
+			<label>Select Industry </label>
+					<?php
+						echo "<select id='industry'>";
+						echo '<option>Select Industry</option>';  
+						foreach($_menuItems2 as  $value )
+						{
+							//print_r($option);
+							echo '<option value='.$value.'>'.$value.'</option>';  
+						}
+						echo "</select>";
+					?>		
+					<button onclick="SearchBrand()">Search</button> 		
+			</div>
+			
+
+			
+----------------------------		
+
+https://developersushant.wordpress.com/2016/05/
+http://code.tutsplus.com/tutorials/magento-custom-module-development--cms-20643
+
+http://code.tutsplus.com/articles/frequently-used-functions-in-magento-development--cms-22458
+
+
+	
+			
